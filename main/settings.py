@@ -14,7 +14,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['34.141.58.26',]
 
 # Application definition
 
@@ -106,7 +106,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -118,7 +117,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
@@ -129,6 +128,15 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 
 
 MEDIA_URL = '/media/'
@@ -136,5 +144,6 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'http://127.0.0.1:8000',
 ]
