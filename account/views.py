@@ -2,9 +2,11 @@ from rest_framework.views import APIView
 from account.serializers import RegisterSerializer, ForgotPasswordSerializer,ForgotPasswordCompleteSerializer
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
 
 User = get_user_model()
-
 
 class RegisterAPIView(APIView):
     
@@ -41,3 +43,15 @@ class ForgotPasswordCompleteAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.set_new_password()
         return Response('Пароль успешно изменен')
+
+# class LogOutAPIView(ObtainAuthToken):
+    
+#     permission_classes = [IsAuthenticated]
+
+#     def post(self, request):
+#         try:
+#             user = request.user
+#             Token.objects.get(user=user).delete()
+#             return Response('Log out!', status=200)
+#         except:
+#             return Response(status=403)
