@@ -11,7 +11,7 @@ def send_activation_code(email, code):
 def send_reset_password_code(email, code):
     send_mail(
         'insta', # title
-        f'привет чтобы бросить пароль тебе нужно знать этот код = {code}', # body
+        f'Привет чтобы бросить пароль тебе нужно знать этот код = {code}', # body
         'kasimmashrapov@gmail.com', # from
         [email] # to
     )

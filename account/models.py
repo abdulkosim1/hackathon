@@ -39,10 +39,12 @@ class CustomUser(AbstractUser):
     name = models.CharField(max_length=50, null=True, blank=True)
     last_name = models.CharField(max_length=50, null=True, blank=True)
     date_birth = models.DateField(auto_now_add=True)
-    city = models.CharField(max_length=50)
-    bio = models.TextField()
+    city = models.CharField(max_length=50, blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
 
     is_active = models.BooleanField(default=False)
+    is_executant = models.BooleanField(default=False)
+    is_buyer = models.BooleanField(default=False)
     username = None
     activation_code = models.CharField(max_length=50, blank=True)
 

@@ -34,6 +34,7 @@ INSTALLED_APPS = [
 
     #apps
     'account',
+    'post',
 
 ]
 
@@ -138,6 +139,11 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media/'
@@ -147,7 +153,10 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000'
 ]
 
-
-
 CELERY_BROKER_URL = 'redis://localhost:6379'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+}
