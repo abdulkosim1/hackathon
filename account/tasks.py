@@ -5,7 +5,7 @@ from django.core.mail import send_mail
 def send_activation_code(email, code):
     send_mail(
         'Py25 shop project', # title
-        f'http://localhost:8000/api/v1/account/activate/{code}', # body
-        'vladislav001015@gmail.com', # from
+        f'http://34.141.58.26/account/activate/{code}', # body
+        'kasimmashrapov@gmail.com', # from
         [email] # to
     )
