@@ -12,6 +12,7 @@ class Post(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField()
     image = models.ImageField(upload_to='posts/')
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __str__(self) -> str:
         return f'{self.title} -----> {self.owner}'

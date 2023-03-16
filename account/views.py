@@ -1,10 +1,10 @@
 from rest_framework.views import APIView
-from account.serializers import RegisterSerializer, ForgotPasswordSerializer,ForgotPasswordCompleteSerializer
+from account.serializers import RegisterSerializer, ForgotPasswordSerializer,ForgotPasswordCompleteSerializer, ProfileSerializer
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.authtoken.models import Token
+from rest_framework import generics
+# from account.permissions import IsBuyer
 
 User = get_user_model()
 
@@ -44,14 +44,24 @@ class ForgotPasswordCompleteAPIView(APIView):
         serializer.set_new_password()
         return Response('Пароль успешно изменен')
 
-# class LogOutAPIView(ObtainAuthToken):
-    
-#     permission_classes = [IsAuthenticated]
 
-#     def post(self, request):
-#         try:
-#             user = request.user
-#             Token.objects.get(user=user).delete()
-#             return Response('Log out!', status=200)
-#         except:
-#             return Response(status=403)
+class GetProfile(generics.ListAPIView): # Просмотр профиля (себя)
+    serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return User.objects.filter(id=self.request.user.id)
+
+class GetExecutants(generics.ListAPIView): # Полуение всех работников, если я покупатель
+    serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = User.objects.all()
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if User.objects.filter(id=self.request.user.is_buyer) == True:
+            queryset = queryset.filter(is_executant=True)
+            return queryset
+        else:
+            queryset = queryset.filter(is_executant=False)
+            return queryset

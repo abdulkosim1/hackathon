@@ -7,8 +7,11 @@ urlpatterns = [
     path('activate/<uuid:activation_code>/', ActivationView.as_view()),
 
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    # path('logout/', LogOutAPIView.as_view()),
     path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('profile/', GetProfile.as_view()),
+    path('exes/', GetExecutants.as_view()),
+
+
 
     path('reset_password/', ForgotPasswordAPIView.as_view()),
     path('reset_password_complete/', ForgotPasswordCompleteAPIView.as_view())

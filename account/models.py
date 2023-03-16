@@ -41,6 +41,7 @@ class CustomUser(AbstractUser):
     date_birth = models.DateField(auto_now_add=True)
     city = models.CharField(max_length=50, blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
+    profile_image = models.ImageField(blank=True, null=True, upload_to='profile_images')
 
     is_active = models.BooleanField(default=False)
     is_executant = models.BooleanField(default=False)
