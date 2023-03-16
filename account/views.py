@@ -45,6 +45,7 @@ class ForgotPasswordCompleteAPIView(APIView):
 class EditProfileAPIView(generics.RetrieveUpdateAPIView):
     queryset = User.objects.all()
     serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_object(self):
         return self.queryset.get(id=self.request.user.id)
