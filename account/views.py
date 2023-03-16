@@ -3,8 +3,9 @@ from account.serializers import RegisterSerializer, ForgotPasswordSerializer,For
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import generics
-# from account.permissions import IsBuyer
+from rest_framework import generics, mixins
+
+
 
 User = get_user_model()
 
@@ -15,7 +16,6 @@ class RegisterAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response('Вы успешно зарегистрировались. Вам отправлено письмо с активацией', status=201)
-
 
 class ActivationView(APIView):
     def get(self, request, activation_code):
@@ -28,7 +28,6 @@ class ActivationView(APIView):
         except User.DoesNotExist:
             return Response('Link expired', status=400)
 
-
 class ForgotPasswordAPIView(APIView):
     def post(self, request):
         serializer = ForgotPasswordSerializer(data=request.data)
@@ -36,13 +35,19 @@ class ForgotPasswordAPIView(APIView):
         serializer.send_reset_password_code()
         return Response('вам отправлено письмо для восстановления пароля')
 
-
 class ForgotPasswordCompleteAPIView(APIView):
     def post(self, request):
         serializer = ForgotPasswordCompleteSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.set_new_password()
         return Response('Пароль успешно изменен')
+
+class EditProfileAPIView(generics.RetrieveUpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = ProfileSerializer
+
+    def get_object(self):
+        return self.queryset.get(id=self.request.user.id)
 
 
 class GetProfile(generics.ListAPIView): # Просмотр профиля (себя)
@@ -65,3 +70,4 @@ class GetExecutants(generics.ListAPIView): # Полуение всех рабо�
         else:
             queryset = queryset.filter(is_executant=False)
             return queryset
+

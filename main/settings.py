@@ -15,6 +15,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = ['34.141.58.26']
+# ALLOWED_HOSTS = []
 
 # Application definition
 
