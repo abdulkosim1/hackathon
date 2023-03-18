@@ -3,13 +3,11 @@ from account.serializers import RegisterSerializer, ForgotPasswordSerializer,For
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import generics, mixins
-
-
+from rest_framework import generics
 
 User = get_user_model()
 
-class RegisterAPIView(APIView):
+class RegisterAPIView(APIView): # Пост запрос на регистрацию
     
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
@@ -28,7 +26,7 @@ class ActivationView(APIView):
         except User.DoesNotExist:
             return Response('Link expired', status=400)
 
-class ForgotPasswordAPIView(APIView):
+class ForgotPasswordAPIView(APIView): # Пост запрос на сброс пароля
     def post(self, request):
         serializer = ForgotPasswordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -42,14 +40,13 @@ class ForgotPasswordCompleteAPIView(APIView):
         serializer.set_new_password()
         return Response('Пароль успешно изменен')
 
-class EditProfileAPIView(generics.RetrieveUpdateAPIView):
+class EditProfileAPIView(generics.RetrieveUpdateAPIView): # Put & Patch на изменение данных профиля
     queryset = User.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
         return self.queryset.get(id=self.request.user.id)
-
 
 class GetProfile(generics.ListAPIView): # Просмотр профиля (себя)
     serializer_class = ProfileSerializer

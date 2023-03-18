@@ -14,8 +14,8 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['34.141.58.26']
-# ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['34.141.58.26']
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -34,8 +34,9 @@ INSTALLED_APPS = [
     'drf_yasg',
 
     #apps
-    'account',
+    'users',
     'post',
+    # 'feedback',
 
 ]
 
@@ -87,7 +88,7 @@ DATABASES = {
     }
 }
 
-AUTH_USER_MODEL = 'account.CustomUser'
+AUTH_USER_MODEL = 'users.CustomUser'
 
 
 # Password validation

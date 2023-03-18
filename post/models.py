@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+# from account.models import CustomUser as User
+
 
 User = get_user_model()
 
@@ -16,3 +18,5 @@ class Post(models.Model):
 
     def __str__(self) -> str:
         return f'{self.title} -----> {self.owner}'
+    
+
