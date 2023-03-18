@@ -34,9 +34,9 @@ INSTALLED_APPS = [
     'drf_yasg',
 
     #apps
-    'users',
+    'account',
     'post',
-    # 'feedback',
+    'feedback',
 
 ]
 
@@ -88,7 +88,7 @@ DATABASES = {
     }
 }
 
-AUTH_USER_MODEL = 'users.CustomUser'
+AUTH_USER_MODEL = 'account.CustomUser'
 
 
 # Password validation

@@ -34,7 +34,6 @@ class UserManager(BaseUserManager):
 
 
 class CustomUser(AbstractUser):
-    from post.models import Post
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
     name = models.CharField(max_length=50, null=True, blank=True)
@@ -44,7 +43,7 @@ class CustomUser(AbstractUser):
     bio = models.TextField(blank=True, null=True)
     profile_image = models.ImageField(blank=True, null=True, upload_to='profile_images')
 
-    favorite_musics = models.ManyToManyField(Post, related_name='favorite_users', blank=True, null=True)
+    # favorite_posts = models.ManyToManyField(Post, related_name='favorite_users', blank=True, null=True)
 
     is_active = models.BooleanField(default=False)
     is_executant = models.BooleanField(default=False)
