@@ -6,7 +6,12 @@ from .permissions import IsExecutant
 from rest_framework.pagination import PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.generics import ListAPIView
+from django.contrib.auth import get_user_model
+from django.db.models import Avg
 
+
+User = get_user_model()
 
 class CustomPagination(PageNumberPagination): # Кастомная пагинация
     page_size = 6
@@ -36,3 +41,19 @@ class PostRetriveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView): # 
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated, IsExecutant,]
     lookup_field='id'
+
+# class SystemOfRecomendation(ListAPIView): # Get запрос на систему рекомендаций
+#     serializer_class = PostSerializer
+#     permission_classes = []
+#     pagination_class = CustomPagination
+#     queryset = Post.objects.all()
+    
+#     def get_queryset(self):
+#         queryset = super().get_queryset()
+#         # if Post.objects.filter(id=self.request.post.total_likes) > 1:
+#         if Post.objects.filter(id=self.request.user) :
+#             # queryset = queryset.filter(is_buyer=True)
+#             return queryset
+#         else:
+#             # queryset = queryset.filter(is_buyer=False)
+#             return queryset

@@ -11,6 +11,7 @@ urlpatterns = [
     path('profile/', GetProfile.as_view()),
     path('edit_profile/', EditProfileAPIView.as_view()),
     path('executants/', GetExecutants.as_view()),
+    path('buyers/', GetBuyers.as_view()),
 
     path('reset_password/', ForgotPasswordAPIView.as_view()),
     path('reset_password_complete/', ForgotPasswordCompleteAPIView.as_view())

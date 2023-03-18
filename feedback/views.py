@@ -8,6 +8,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import ListAPIView, CreateAPIView
 from post.serializers import PostSerializer
+from post.models import User
+from account.serializers import ProfileSerializer
+from feedback.serializers import RatingSerializer
+from feedback.models import Rating
 
 
 class AddLike(CreateAPIView): # Post запрос на доваление лайков
@@ -28,40 +32,20 @@ class AddLike(CreateAPIView): # Post запрос на доваление лай
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
-# class AddRating(CreateAPIView): # Post запрос на добавление рейтинга
-    # queryset = Post.objects.all()
-    # serializer_class = PostSerializer
-    # permission_classes = [IsAuthenticated, ]
+class AddRating(CreateAPIView): # Post запрос на добавление рейтинга
+    queryset = User.objects.all()
+    serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated, ]
 
-    # def post(self, request, pk, *args, **kwargs):
-    #     serializer = RatingSerializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     rating_obj, _ = Rating.objects.get_or_create(owner=request.user, post_id=pk)
-    #     rating_obj.rating = request.data['rating']
-    #     rating_obj.save()
-    #     return Response(serializer.data)
-
-# class SongAddAndRemoveFavorite(APIView): # Post запрос на добавление и удаление песен в избранных
-#     permission_classes = [IsAuthenticated]
-#     def post(self, request):
-#         print(request.data)
-#         post_id = request.data.get('post_id')
-#         try:
-#             post_id_a = Post.objects.get(id=post_id)
-#         except Post.DoesNotExist:
-#             return Response('Такой песни не существует :(', status=status.HTTP_404_NOT_FOUND)
-#         request.user.users.add(post_id_a)
-#         return Response('Добавлено в избранное :)', status=200)
-
-#     def delete(self, request):
-#         post_id = request.data.get('post_id')
-#         try:
-#             post_id_a = Post.objects.get(id=post_id)
-#         except Post.DoesNotExist:
-#             return Response('Такой песни не существует :(', status=status.HTTP_404_NOT_FOUND)
-#         request.user.favorite_musics.remove(post_id_a)
-#         return Response('Удалено из избранного :)', status=200)
-
+    def post(self, request, pk, *args, **kwargs):
+        serializer = RatingSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        print(request.data)
+        
+        rating_obj, _ = Rating.objects.get_or_create(owner=request.user, users_id=pk)
+        rating_obj.rating = request.data['rating']
+        rating_obj.save()
+        return Response(serializer.data)
 
 class CommentModelViewSet(ModelViewSet): # CRUD на комменты
     queryset = Comment.objects.all()

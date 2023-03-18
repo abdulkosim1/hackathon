@@ -15,19 +15,19 @@ class Like(models.Model):
     def __str__(self) -> str:
         return f'{self.owner} liked - {self.post.title}'
 
-# class Rating(models.Model):
-#     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings')
-#     users = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='ratings')
-#     rating = models.SmallIntegerField(
-#         validators=[
-#             MinValueValidator(1),
-#             MaxValueValidator(5)
-#         ],
-#         blank=True, null=True
-#     )
+class Rating(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner_ratings')
+    users = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_ratings')
+    rating = models.SmallIntegerField(
+        validators=[
+            MinValueValidator(1),
+            MaxValueValidator(5)
+        ],
+        blank=True, null=True
+    )
 
-#     def __str__(self) -> str:
-#         return f'{self.owner} --> {self.post.title}'
+    def __str__(self) -> str:
+        return f'{self.owner} --> {self.post.title}'
 
 class Comment(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')

@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
+from account.permissions import IsBuyer
 
 User = get_user_model()
 
@@ -59,7 +60,7 @@ class GetExecutants(generics.ListAPIView): # Полуение всех рабо�
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
-    
+
     def get_queryset(self):
         queryset = super().get_queryset()
         if User.objects.filter(id=self.request.user.is_buyer) == True:
@@ -69,3 +70,16 @@ class GetExecutants(generics.ListAPIView): # Полуение всех рабо�
             queryset = queryset.filter(is_executant=False)
             return queryset
 
+class GetBuyers(generics.ListAPIView): # Полуение всех клиентов, если я работник
+    serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = User.objects.all()
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if User.objects.filter(id=self.request.user.is_executant) == True:
+            queryset = queryset.filter(is_buyer=True)
+            return queryset
+        else:
+            queryset = queryset.filter(is_buyer=False)
+            return queryset

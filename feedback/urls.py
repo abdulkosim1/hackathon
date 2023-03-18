@@ -8,8 +8,8 @@ router.register('comment', CommentModelViewSet)
 
 urlpatterns = [  # adding like, rating, favorite
     path('<int:pk>/like/', AddLike.as_view()),
-    path('', include(router.urls)),
+    path('<int:pk>/rating/', AddRating.as_view()),
 
-    # path('<int:pk>/rating/', AddRating.as_view()),
+    path('', include(router.urls)),
     # path('favorite/', SongAddAndRemoveFavorite.as_view()),
 ]

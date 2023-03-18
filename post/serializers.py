@@ -8,11 +8,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation =  super().to_representation(instance)
-        # representation['owner'] = instance.author.author_title
-        # representation['album'] = instance.album.album_title
-        # representation['genre'] = instance.genre.genre_title
         representation['total_likes'] = instance.likes.filter(is_like=True).count()
-        # representation['ratings'] = instance.ratings.aggregate(Avg('rating'))
         return representation
     
 

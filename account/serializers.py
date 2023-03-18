@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from account.send_email import send_reset_password_code
 from account.tasks import send_activation_code as celery_register
+from django.db.models import Avg
 
 User = get_user_model()  # CustomUser
 
@@ -80,6 +81,12 @@ class ForgotPasswordCompleteSerializer(serializers.Serializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+    
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['ratings'] = instance.user_ratings.aggregate(Avg('rating'))
+        return representation
+
     class Meta:
         model = User
         fields = '__all__'
