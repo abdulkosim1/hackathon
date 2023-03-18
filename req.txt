@@ -8,3 +8,5 @@ dj-config-url
 django-cors-headers
 redis
 celery
+django-filter
+drf_yasg
