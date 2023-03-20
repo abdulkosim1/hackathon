@@ -31,7 +31,7 @@ class Rating(models.Model):
 
 class Comment(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     body = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -40,8 +40,8 @@ class Comment(models.Model):
         return f'{self.owner} --> {self.post.title}'
     
 class Favorite(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favotives')
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='favotites')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorives')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='favorites')
 
     def __str__(self) -> str:
         return f'{self.owner_id} --- {self.post_id}'

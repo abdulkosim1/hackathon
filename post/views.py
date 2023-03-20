@@ -9,7 +9,9 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import ListAPIView
 from django.contrib.auth import get_user_model
 from django.db.models import Avg
+import logging
 
+logger = logging.getLogger('main')
 
 User = get_user_model()
 
@@ -27,6 +29,8 @@ class PostListAPIView(generics.ListAPIView): # Просмотр постов
     filter_fields = ['owner', 'title']
     search_fields = ['title', ]
     ordering_fileds = ['id','owner']
+
+    logger.info('get all posts')
 
 class PostCreateAPIView(generics.CreateAPIView): # Добавление постов
     queryset = Post.objects.all()

@@ -1,17 +1,16 @@
 from post.models import Post
 from rest_framework.viewsets import ModelViewSet
-from feedback.models import Comment, Like
+from rest_framework import mixins
+from rest_framework.viewsets import GenericViewSet
+from feedback.models import Comment, Like, Rating, Favorite
 from feedback.serializers import CommentSerializer
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.generics import ListAPIView, CreateAPIView
+from rest_framework.generics import CreateAPIView
 from post.serializers import PostSerializer
 from post.models import User
 from account.serializers import ProfileSerializer
-from feedback.serializers import RatingSerializer
-from feedback.models import Rating
+from feedback.serializers import RatingSerializer, FavoriteSerializer
 
 
 class AddLike(CreateAPIView): # Post запрос на доваление лайков
@@ -40,7 +39,6 @@ class AddRating(CreateAPIView): # Post запрос на добавление р
     def post(self, request, pk, *args, **kwargs):
         serializer = RatingSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        print(request.data)
         
         rating_obj, _ = Rating.objects.get_or_create(owner=request.user, users_id=pk)
         rating_obj.rating = request.data['rating']
@@ -55,3 +53,20 @@ class CommentModelViewSet(ModelViewSet): # CRUD на комменты
     def perform_create(self, serializer):
         serializer.save(owner = self.request.user)
         return serializer
+    
+class FavoriteModelViewSet(mixins.CreateModelMixin, #crud на избранные
+                   mixins.RetrieveModelMixin,
+                   mixins.DestroyModelMixin,
+                   mixins.ListModelMixin,
+                   GenericViewSet):
+    queryset = Favorite.objects.all()
+    serializer_class = FavoriteSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        return serializer.save(owner=self.request.user)
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(owner=self.request.user)
+        return queryset

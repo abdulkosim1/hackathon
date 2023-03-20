@@ -1,10 +1,11 @@
 from rest_framework import serializers
 from .models import Post
-from feedback.serializers import LikeSerializer
+from feedback.serializers import LikeSerializer, CommentSerializer
 
 class PostSerializer(serializers.ModelSerializer):
     owner = serializers.EmailField(required=False)
     likes = LikeSerializer(many=True, read_only=True)
+    comments = CommentSerializer(many=True, read_only=True)
 
     def to_representation(self, instance):
         representation =  super().to_representation(instance)

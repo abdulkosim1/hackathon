@@ -1,14 +1,18 @@
-from django.urls import path
+from django.urls import path, include
 from account.views import *
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from django.views.decorators.cache import cache_page
+
+
 
 urlpatterns = [
-    path('register/', RegisterAPIView.as_view()),
+    path('register/', cache_page(60)(RegisterAPIView.as_view())),
     path('activate/<uuid:activation_code>/', ActivationView.as_view()),
 
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+
     path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('profile/', GetProfile.as_view()),
+    path('profile/', cache_page(60)(GetProfile.as_view())),
     path('edit_profile/', EditProfileAPIView.as_view()),
     path('executants/', GetExecutants.as_view()),
     path('buyers/', GetBuyers.as_view()),
