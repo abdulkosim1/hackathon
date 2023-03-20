@@ -54,10 +54,5 @@ class PostRetriveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView): # 
     
 #     def get_queryset(self):
 #         queryset = super().get_queryset()
-#         # if Post.objects.filter(id=self.request.post.total_likes) > 1:
-#         if Post.objects.filter(id=self.request.user) :
-#             # queryset = queryset.filter(is_buyer=True)
-#             return queryset
-#         else:
-#             # queryset = queryset.filter(is_buyer=False)
+#         if Post.objects.filter(likes=True)> 1:
 #             return queryset
