@@ -6,12 +6,13 @@ from rest_framework.views import APIView
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
+from account.permissions import IsBuyer
 
 
 class OrderModeViewSet(ModelViewSet):
     queryset = Order.objects.all()  # [1 admin,2 john,3 sam,4,5,6]
     serializer_class = OrderSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsBuyer]
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
