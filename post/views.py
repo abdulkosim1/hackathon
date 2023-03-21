@@ -46,7 +46,7 @@ class PostRetriveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView): # 
     permission_classes = [IsAuthenticated, IsExecutant,]
     lookup_field='id'
 
-# class SystemOfRecomendation(ListAPIView): # Get запрос на систему рекомендаций
+# class SystemOfRecomendation(ListAPIView): # Get запрос на систему рекомендаций  
 #     serializer_class = PostSerializer
 #     permission_classes = []
 #     pagination_class = CustomPagination
@@ -54,5 +54,5 @@ class PostRetriveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView): # 
     
 #     def get_queryset(self):
 #         queryset = super().get_queryset()
-#         if Post.objects.filter(likes=True)> 1:
+#         if Post.objects.filter(id=self.request.user.id):
 #             return queryset

@@ -15,6 +15,11 @@ class RatingSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.email')
+
+    def to_representation(self, instance):
+        representation =  super().to_representation(instance)
+        representation['profile_image'] = instance.owner.profile_image.url
+        return representation
     
     class Meta:
         model = Comment
