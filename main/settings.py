@@ -173,7 +173,10 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'https://final-hackaton-freelance-mp.vercel.app/',
+
+
 ]
 
 CELERY_BROKER_URL = 'redis://localhost:6379'
