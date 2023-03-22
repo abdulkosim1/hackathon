@@ -1,5 +1,5 @@
 from rest_framework import generics
-from .serializers import PostSerializer
+from .serializers import PostSerializer, PostGetSerializer
 from .models import Post
 from rest_framework.permissions import IsAuthenticated
 from .permissions import IsExecutant
@@ -23,7 +23,7 @@ class CustomPagination(PageNumberPagination): # Кастомная пагина�
 
 class PostListAPIView(generics.ListAPIView): # Просмотр постов 
     queryset = Post.objects.all()
-    serializer_class = PostSerializer
+    serializer_class = PostGetSerializer
     permission_classes = []
     pagination_class = CustomPagination
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
