@@ -8,7 +8,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import ListAPIView
 from django.contrib.auth import get_user_model
-from django.db.models import Avg
+from django.db.models import Count
+
 import logging
 
 logger = logging.getLogger('main')
@@ -26,9 +27,9 @@ class PostListAPIView(generics.ListAPIView): # Просмотр постов
     permission_classes = []
     pagination_class = CustomPagination
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filter_fields = ['owner', 'title']
+    filter_fields = ['owner', 'title', 'likes', 'comments']
     search_fields = ['title', ]
-    ordering_fileds = ['id','owner']
+    ordering_fileds = ['id','owner', 'likes', 'comments']
 
     logger.info('get all posts')
 
@@ -46,13 +47,8 @@ class PostRetriveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView): # 
     permission_classes = [IsAuthenticated, IsExecutant,]
     lookup_field='id'
 
-# class SystemOfRecomendation(ListAPIView): # Get запрос на систему рекомендаций  
-#     serializer_class = PostSerializer
-#     permission_classes = []
-#     pagination_class = CustomPagination
-#     queryset = Post.objects.all()
-    
-#     def get_queryset(self):
-#         queryset = super().get_queryset()
-#         if Post.objects.filter(id=self.request.user.id):
-#             return queryset
+class SystemOfRecomendation(ListAPIView): # Get запрос на систему рекомендаций  
+    serializer_class = PostSerializer
+    permission_classes = []
+    pagination_class = CustomPagination
+    queryset = Post.objects.annotate(like_count=Count('likes')).filter(like_count__gt=1)

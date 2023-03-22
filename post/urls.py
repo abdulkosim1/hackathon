@@ -9,6 +9,6 @@ urlpatterns = [
     path('change/<int:id>/', PostRetriveUpdateDestroyAPIView.as_view()),
 
 
-    # path('recom/', SystemOfRecomendation.as_view()),
+    path('recom/', SystemOfRecomendation.as_view()),
 
 ]

@@ -52,7 +52,6 @@ class CommentModelViewSet(ModelViewSet): # CRUD на комменты
 
     def perform_create(self, serializer):
         serializer.save(owner = self.request.user)
-        # serializer.save(profile_image = self.request.user)
         return serializer
     
 class FavoriteModelViewSet(mixins.CreateModelMixin, #crud на избранные
@@ -69,5 +68,8 @@ class FavoriteModelViewSet(mixins.CreateModelMixin, #crud на избранны�
 
     def get_queryset(self):
         queryset = super().get_queryset()
+
+        # Comment.objects.filter(owner=self.request.user.id)
+
         queryset = queryset.filter(owner=self.request.user)
         return queryset
