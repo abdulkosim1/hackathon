@@ -10,6 +10,7 @@ class PostSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation =  super().to_representation(instance)
         representation['total_likes'] = instance.likes.filter(is_like=True).count()
+        representation['profile_image'] = instance.owner.profile_image.url
         return representation
     
 
